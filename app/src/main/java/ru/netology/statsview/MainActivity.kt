@@ -21,17 +21,13 @@ class MainActivity : AppCompatActivity() {
             500F,
             500F,
         )
-//        ObjectAnimator.ofFloat(view, View.ROTATION, 360F).apply {
-//            duration = 3000
-//            interpolator = LinearInterpolator()
-//        }.start()
-//        val viewAnim = AnimationUtils.loadAnimation(
-//            this, R.anim.animation
-//        )
-//
-//        view.startAnimation(viewAnim)
 
 
+        val hundredPercentSum = view.data[0] * 4F
+        val sumElement = view.data.sum()
+
+        val textPercent = findViewById<TextView>(R.id.percent)
+        textPercent.text =(sumElement*100/hundredPercentSum).toString()+"%"
         val textView = findViewById<TextView>(R.id.label)
         view.startAnimation(
             AnimationUtils.loadAnimation(this,R.anim.animation).apply {
