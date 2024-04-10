@@ -32,6 +32,7 @@ class StatsView @JvmOverloads constructor(
     private val partsCount = 4F
 
     private var progress = 0F
+    private var rotate = 0F
     private var valueAnimator: ValueAnimator? = null
 
 
@@ -82,23 +83,28 @@ class StatsView @JvmOverloads constructor(
 
 
         var startFrom = -90F
+        rotate+=5F*progress
         for ((index, datum) in data.withIndex()) {
             val percent = getPercent(hundredPercentSum, datum) / 100
             val angle = 360F * percent
+
             paint.color = colors.getOrNull(index) ?: randomColor()
-            canvas.drawArc(oval, startFrom, angle * progress, false, paint)
-            startFrom += angle
+            canvas.drawArc(oval, startFrom+rotate, angle * progress, false, paint)
+            startFrom +=  angle
+
+
         }
+
         paint.color = colors[0]
-        canvas.drawArc(oval, startFrom, 1F, false, paint)
+        canvas.drawArc(oval, startFrom+rotate, 1F, false, paint)
 
 
-//        canvas.drawText(
-//            "%.2f%%".format(getPercent(hundredPercentSum, sumElement)),
-//            center.x,
-//            center.y + textPaint.textSize / 4,
-//            textPaint,
-//        )
+        canvas.drawText(
+            "%.2f%%".format(getPercent(hundredPercentSum, sumElement)),
+            center.x,
+            center.y + textPaint.textSize / 4,
+            textPaint,
+        )
     }
 
     private fun update() {
@@ -112,6 +118,7 @@ class StatsView @JvmOverloads constructor(
         valueAnimator = ValueAnimator.ofFloat(0F, 1F).apply {
             addUpdateListener { anim ->
                 progress = anim.animatedValue as Float
+
                 invalidate()
             }
             startDelay = 500
